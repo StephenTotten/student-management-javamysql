@@ -7,8 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * This class represents a Student Management System with various operations
+ * such as adding, deleting, updating, searching, and printing students.
+ */
 public class StudentManagement {
 
+    /**
+     * The main method of the Student Management System.
+     *
+     * @param args The command line arguments (not used in this application).
+     */
     public static void main(String[] args) {
         System.out.println("Welcome to Student Management System");
         System.out.println("Press the option number to perform the action");
@@ -103,6 +112,13 @@ public class StudentManagement {
         scanner.close();
     }
 
+    /**
+     * Creates a database connection to the MySQL database.
+     *
+     * @return A Connection object representing the database connection.
+     * @throws RuntimeException If the MySQL JDBC driver is not found or
+     *                          if there is a failure to connect to the database.
+     */
     private static Connection createDatabaseConnection() {
         try {
             // Load/register the MySQL JDBC driver class
@@ -121,7 +137,11 @@ public class StudentManagement {
         }
     }
     
-
+    /**
+     * Closes the database connection.
+     *
+     * @param connection The Connection object to be closed.
+     */
     private static void closeDatabaseConnection(Connection connection) {
         try {
             if (connection != null) {
@@ -132,10 +152,18 @@ public class StudentManagement {
         }
     }
 
+
+    /**
+     * Adds a new student to the database.
+     *
+     * @param connection The database connection.
+     * @param student    The Student object to be added to the database.
+     */
+
     // We use PreparedStatement to safely handle SQL queries and parameterize them to prevent SQL injection.
     private static void addStudent(Connection connection, Student student) {
         String insertQuery = "INSERT INTO students (name, age, id) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) { 
             preparedStatement.setString(1, student.getName());
             preparedStatement.setInt(2, student.getAge());
             preparedStatement.setInt(3, student.getId());
@@ -147,6 +175,15 @@ public class StudentManagement {
         }
     }
 
+    /**
+     * Updates an existing student's information in the database.
+     *
+     * @param connection The database connection.
+     * @param oldName    The old name of the student to be updated.
+     * @param newName    The new name for the student.
+     * @param newAge     The new age for the student.
+     * @param newId      The new ID for the student.
+     */
     private static void updateStudent(Connection connection, String oldName, String newName, int newAge, int newId) {
         String updateQuery = "UPDATE students SET name=?, age=?, id=? WHERE name=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
@@ -166,6 +203,12 @@ public class StudentManagement {
         }
     }
 
+    /**
+     * Deletes a student from the database by their name.
+     *
+     * @param connection The database connection.
+     * @param name       The name of the student to be deleted.
+     */
     private static void deleteStudent(Connection connection, String name) {
         String deleteQuery = "DELETE FROM students WHERE name=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
@@ -182,6 +225,12 @@ public class StudentManagement {
         }
     }
 
+    /**
+     * Retrieves a list of all students from the database.
+     *
+     * @param connection The database connection.
+     * @return A list of Student objects representing all students in the database.
+     */
     private static List<Student> getAllStudents(Connection connection) {
         List<Student> studentList = new ArrayList<>();
         String selectQuery = "SELECT * FROM students";
@@ -201,6 +250,12 @@ public class StudentManagement {
         return studentList;
     }
 
+    /**
+     * Searches for a student in the database by their name.
+     *
+     * @param connection The database connection.
+     * @param name       The name of the student to search for.
+     */
     private static void searchStudentByName(Connection connection, String name) {
         String selectQuery = "SELECT * FROM students WHERE name=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
@@ -217,6 +272,12 @@ public class StudentManagement {
         }
     }
 
+    /**
+     * Searches for a student in the database by their ID.
+     *
+     * @param connection The database connection.
+     * @param id         The ID of the student to search for.
+     */
     private static void searchStudentByID(Connection connection, int id) {
         String selectQuery = "SELECT * FROM students WHERE id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
@@ -233,6 +294,11 @@ public class StudentManagement {
         }
     }
 
+    /**
+     * Prints the details of a list of students.
+     *
+     * @param studentList A list of Student objects to be printed.
+     */
     private static void printStudents(List<Student> studentList) {
         for (Student student : studentList) {
             System.out.println("Name: " + student.getName() + " // Age: " + student.getAge() + " // ID: " + student.getId());
