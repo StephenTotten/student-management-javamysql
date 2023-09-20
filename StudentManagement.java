@@ -20,14 +20,7 @@ public class StudentManagement {
      */
     public static void main(String[] args) {
         System.out.println("Welcome to Student Management System");
-        System.out.println("Press the option number to perform the action");
-        System.out.println("1. Add student");
-        System.out.println("2. Delete student");
-        System.out.println("3. Update student");
-        System.out.println("4. Search student");
-        System.out.println("5. Print all students");
-        System.out.println("6. Exit");
-
+        showOptions();
         List<Student> studentList = new ArrayList<>();
         Connection connection = createDatabaseConnection();
 
@@ -37,7 +30,8 @@ public class StudentManagement {
         do {
             System.out.print("Enter your choice: ");
             choice = scanner.nextInt();
-
+            scanner.nextLine(); // Consume the newline character
+            
             switch (choice) {
                 case 1:
                     Student newStudent = new Student();
@@ -48,12 +42,14 @@ public class StudentManagement {
                     System.out.print("Enter student id: ");
                     newStudent.setId(scanner.nextInt());
                     addStudent(connection, newStudent);
+                    showOptions();
                     break;
 
                 case 2:
                     System.out.print("Enter student name to delete: ");
                     String deleteName = scanner.next();
                     deleteStudent(connection, deleteName);
+                    showOptions();
                     break;
 
                 case 3:
@@ -66,6 +62,7 @@ public class StudentManagement {
                     System.out.print("Enter new id: ");
                     int newId = scanner.nextInt();
                     updateStudent(connection, oldName, newName, newAge, newId);
+                    showOptions();
                     break;
 
                 case 4:
@@ -79,12 +76,14 @@ public class StudentManagement {
                             System.out.print("Enter student name to search: ");
                             String searchName = scanner.next();
                             searchStudentByName(connection, searchName);
+                            showOptions();
                             break;
 
                         case 2:
                             System.out.print("Enter student ID to search: ");
                             int searchID = scanner.nextInt();
                             searchStudentByID(connection, searchID);
+                            showOptions();
                             break;
 
                         default:
@@ -96,6 +95,7 @@ public class StudentManagement {
                 case 5:
                     studentList = getAllStudents(connection);
                     printStudents(studentList);
+                    showOptions();
                     break;
 
                 case 6:
@@ -110,6 +110,20 @@ public class StudentManagement {
         } while (choice != 6);
 
         scanner.close();
+    }
+
+        /**
+     * Shows the menu options.
+     *
+     */
+    private static void showOptions() {
+        System.out.println("Press the option number to perform the action");
+        System.out.println("1. Add student");
+        System.out.println("2. Delete student");
+        System.out.println("3. Update student");
+        System.out.println("4. Search student");
+        System.out.println("5. Print all students");
+        System.out.println("6. Exit");
     }
 
     /**
