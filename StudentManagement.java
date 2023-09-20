@@ -112,7 +112,7 @@ public class StudentManagement {
         scanner.close();
     }
 
-        /**
+    /**
      * Shows the menu options.
      *
      */
