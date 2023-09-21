@@ -111,7 +111,7 @@ public class DatabaseManager {
      */
     public List<Student> getAllStudents(Connection connection) {
         List<Student> studentList = new ArrayList<>();
-        String selectQuery = "SELECT * FROM students";
+        String selectQuery = "SELECT id, name, age FROM students";
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
@@ -135,7 +135,7 @@ public class DatabaseManager {
      * @param name       The name of the student to search for.
      */
     public void searchStudentByName(Connection connection, String name) {
-        String selectQuery = "SELECT * FROM students WHERE name=?";
+        String selectQuery = "SELECT id, name, age FROM students WHERE name=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -157,7 +157,7 @@ public class DatabaseManager {
      * @param id         The ID of the student to search for.
      */
     public void searchStudentByID(Connection connection, int id) {
-        String selectQuery = "SELECT * FROM students WHERE id=?";
+        String selectQuery = "SELECT name, age, id FROM students WHERE id=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
